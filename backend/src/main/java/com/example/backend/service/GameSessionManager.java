@@ -13,6 +13,7 @@ import com.example.backend.service.gamestate.shop.ShopState;
 import com.example.backend.service.gamestate.equipment.EquipmentListState;
 import com.example.backend.exception.SessionNotFoundException;
 import com.example.backend.service.gamestate.character.EnemyState;
+import com.example.backend.domain.EnemyType;
 
 @Service
 public class GameSessionManager {
@@ -23,7 +24,7 @@ public class GameSessionManager {
     }
 
     public GameSession createGameSession(String sessionId) {
-        GameSession gameSession = new GameSession(sessionId, new PlayerState(new EquipmentListState()), new MoveState(), new BattleState(), new TreasureState(), new ShopState(), new EnemyState("スライム", 1, 100, 100, 10, 10, 10, 0, 100, "/img/enemy/slime.png", 1, 10));
+        GameSession gameSession = new GameSession(sessionId, new PlayerState(new EquipmentListState()), new MoveState(), new BattleState(), new TreasureState(), new ShopState(), new EnemyState("スライム", 1, 100, 100, 10, 10, 10, 0, 100, "/img/enemy/slime.png", 1, 10, EnemyType.NORMAL));
         gameSessions.put(sessionId, gameSession);
         return gameSession;
     }

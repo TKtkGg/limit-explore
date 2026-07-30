@@ -17,6 +17,8 @@ import com.example.backend.domain.BattleChoice;
 import com.example.backend.service.gamestate.item.ItemState;
 import com.example.backend.service.gamestate.item.ItemListState;
 import com.example.backend.service.gamestate.session.GameSession;
+import com.example.backend.domain.EnemyType;
+import com.example.backend.domain.SelectedRoute;
 
 @Service
 public class BattleService {
@@ -36,8 +38,14 @@ public class BattleService {
         List<EnemyState> selectEnemies = new ArrayList<>();
         for (EnemyState enemy : this.enemyList) {
             for(int i = 0; i < enemy.getSpawnRate(); i++) {
-                if(enemy.getAppearedLevel() <= gameSession.getPlayerState().getLevel()) {
+                if (enemy.getEnemyType().equals(EnemyType.BOSS) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BOSS)) {
                     selectEnemies.add(enemy);
+                }
+                
+                if (enemy.getEnemyType().equals(EnemyType.NORMAL) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BATTLE)) {
+                    if(enemy.getAppearedLevel() <= gameSession.getPlayerState().getLevel()) {
+                        selectEnemies.add(enemy);
+                    }
                 }
             }
         }

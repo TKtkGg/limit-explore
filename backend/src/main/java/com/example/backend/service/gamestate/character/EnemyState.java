@@ -1,14 +1,19 @@
 package com.example.backend.service.gamestate.character;
 
+import com.example.backend.domain.EnemyType;
+
 public class EnemyState extends CharacterState {
     String imagePath;
     int appearedLevel;
     int spawnRate;
-    public EnemyState(String name, int level, int maxHp, int hp, int atk, int def, int spd, int exp, int gold, String imagePath, int appearedLevel, int spawnRate) {
+    EnemyType enemyType;
+
+    public EnemyState(String name, int level, int maxHp, int hp, int atk, int def, int spd, int exp, int gold, String imagePath, int appearedLevel, int spawnRate, EnemyType enemyType) {
         super(name, level, maxHp, hp, atk, def, spd, exp, gold);
         this.imagePath = imagePath;
         this.appearedLevel = appearedLevel;
         this.spawnRate = spawnRate;
+        this.enemyType = enemyType;
     }
 
     public void respawn() {
@@ -41,6 +46,10 @@ public class EnemyState extends CharacterState {
         return this.spawnRate;
     }
 
+    public EnemyType getEnemyType() {
+        return this.enemyType;
+    }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
@@ -51,5 +60,9 @@ public class EnemyState extends CharacterState {
 
     public void setSpawnRate(int spawnRate) {
         this.spawnRate = spawnRate;
+    }
+
+    public void setEnemyType(EnemyType enemyType) {
+        this.enemyType = enemyType;
     }
 }
