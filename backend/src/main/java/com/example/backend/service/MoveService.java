@@ -84,7 +84,12 @@ public class MoveService {
             route = newRoute;
         }
         SelectedRoute[] options = {route[rand.nextInt(route.length)], route[rand.nextInt(route.length)], route[rand.nextInt(route.length)]};
+        if (gameSession.getMoveState().getRemainingSteps() == 1) {
+            options = new SelectedRoute[] {SelectedRoute.BOSS, SelectedRoute.BOSS, SelectedRoute.BOSS};
+        }
         gameSession.getMoveState().setRandomRouteOptions(options);
+
+        
         return options;
     }
 
@@ -98,6 +103,7 @@ public class MoveService {
 
     private boolean shouldRegenerate(SelectedRoute[] options, GameSession gameSession) {
         if (options == null) return true;
+        if (Arrays.asList(options).contains(SelectedRoute.BOSS) && gameSession.getMoveState().getRemainingSteps() == 1) return true;
         return Arrays.asList(options).contains(SelectedRoute.CARD) && this.cardService.getUnownedCards(gameSession).isEmpty();
     }
 }

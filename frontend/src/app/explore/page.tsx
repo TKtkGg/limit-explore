@@ -89,6 +89,9 @@ export default function ExplorePage() {
             } else if (routeType === "BATTLE") {
                 response = await apiPost("/move", { routeType: routeType });
                 router.push("/battle");
+            } else if (routeType === "BOSS") {
+                response = await apiPost("/move", { routeType: routeType });
+                router.push("/battle");
             } else {
                 response = await apiPost("/move", { routeType: routeType });
             }
