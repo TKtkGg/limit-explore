@@ -26,6 +26,8 @@ const ROUTE_SLOTS = [
 
 export default function ExplorePage() {
     const [remainingSteps, setRemainingSteps] = useState(25);
+    const [currentLaps, setCurrentLaps] = useState(1);
+    const [totalLaps, setTotalLaps] = useState(3);
     const [stopped, setStopped] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,8 @@ export default function ExplorePage() {
             try {
                 const response = await apiGet("/move/status");
                 setRemainingSteps(response.remainingSteps);
+                setCurrentLaps(response.currentLaps);
+                setTotalLaps(response.totalLaps);
                 setStopped(response.stopped);
                 setRouteOptions(response.routeOptions);
                 setMessage(response.message);
@@ -89,6 +93,8 @@ export default function ExplorePage() {
                 response = await apiPost("/move", { routeType: routeType });
             }
             setRemainingSteps(response.remainingSteps);
+            setCurrentLaps(response.currentLaps);
+            setTotalLaps(response.totalLaps);
             setStopped(response.stopped);
             setRouteOptions(response.routeOptions);
             setMessage(response.message);
@@ -134,7 +140,7 @@ export default function ExplorePage() {
                         img={ICONS.setting}
                     />
                     <div className="rounded-md border-2 border-black bg-white/90 px-3 py-1.5 text-xs font-bold tabular-nums text-neutral-900 shadow-[2px_2px_0_#000] sm:text-sm">
-                        残り {remainingSteps}
+                        ラップ: {currentLaps} / {totalLaps} 残り {remainingSteps} マス
                     </div>
                 </div>
 
