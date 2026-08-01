@@ -254,7 +254,8 @@ export default function BattlePage() {
             ? parseBattleResult(
                 battleState.message,
                 battleState.playerState.level,
-                battleState.playerState.hp
+                battleState.playerState.hp,
+                battleState.enemyState.enemyType
             )
             : null;
 

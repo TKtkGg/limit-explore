@@ -4,13 +4,14 @@ export type BattleResultDisplay = {
     gold: number | null;
     levelFrom: number | null;
     levelTo: number | null;
-    backPath: "/explore" | "/gameover";
+    backPath: "/explore" | "/gameover" | "/progress";
 };
 
 export function parseBattleResult(
     message: string,
     playerLevel: number,
-    playerHp: number
+    playerHp: number,
+    enemyType: "NORMAL" | "BOSS"
 ): BattleResultDisplay | null {
     if (message.includes("逃げた")) {
         return {
@@ -43,7 +44,7 @@ export function parseBattleResult(
             gold: Number(victoryMatch[2]),
             levelFrom: levelUpCount > 0 ? playerLevel - levelUpCount : null,
             levelTo: levelUpCount > 0 ? playerLevel : null,
-            backPath: "/explore",
+            backPath: enemyType === "BOSS" ? "/progress" : "/explore",
         };
     }
 

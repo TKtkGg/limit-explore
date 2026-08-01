@@ -38,6 +38,7 @@ export type EnemyState = {
     exp: number;
     gold: number;
     imagePath: string;
+    enemyType: "NORMAL" | "BOSS";
 }
 
 export type StatusState = {

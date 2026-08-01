@@ -41,7 +41,7 @@ public class BattleService {
                 if (enemy.getEnemyType().equals(EnemyType.BOSS) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BOSS)) {
                     selectEnemies.add(enemy);
                 }
-                
+
                 if (enemy.getEnemyType().equals(EnemyType.NORMAL) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BATTLE)) {
                     if(enemy.getAppearedLevel() <= gameSession.getPlayerState().getLevel()) {
                         selectEnemies.add(enemy);
@@ -60,6 +60,7 @@ public class BattleService {
         gameSession.getEnemyState().setExp(template.getExp());
         gameSession.getEnemyState().setGold(template.getGold());
         gameSession.getEnemyState().setImagePath(template.getImagePath());
+        gameSession.getEnemyState().setEnemyType(template.getEnemyType());
     }
 
     public BattleResponse battleStart(String sessionId) {
@@ -191,6 +192,8 @@ public class BattleService {
 
     public String result(String winnerName, GameSession gameSession) {
         gameSession.getBattleState().setFinished(true);
+        if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) gameSession.getMoveState().setCleared(true);
+
         if(winnerName != null && winnerName.equals(gameSession.getPlayerState().getName())) {
             int[] reward = applyCards(gameSession.getEnemyState().getGold(), gameSession.getEnemyState().getExp(), gameSession);
 
