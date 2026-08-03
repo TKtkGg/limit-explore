@@ -34,7 +34,8 @@ public class SecurityConfig {
                     "/equipment", "/equipment/**",
                     "/card", "/card/**", "/cards",
                     "/items",
-                    "/gameover"
+                    "/gameover",
+                    "/progress"
                 ).permitAll()
                 // ログイン必須（セーブ・ランキング登録）
                 .requestMatchers("/save/**", "/score/register", "/ranking").authenticated()
