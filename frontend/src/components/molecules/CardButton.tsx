@@ -10,10 +10,11 @@ type Props = {
     isDisabled: boolean;
     isThisChosen: boolean;
     handleChooseCard: (card: CardState) => void;
+    isDefeatedBoss: boolean;
 }
 
 export const CardButton = (props: Props) => {
-    const { card, index, isDisabled, isThisChosen, handleChooseCard } = props;
+    const { card, index, isDisabled, isThisChosen, handleChooseCard, isDefeatedBoss } = props;
     const { playSfx } = useAudio();
     return (
         <button
@@ -51,7 +52,7 @@ export const CardButton = (props: Props) => {
             ) : (
                 <span className="block transition enabled:active:translate-y-0.5 enabled:active:scale-[0.98]">
                     <Image
-                        src={IMAGES.cardBack}
+                        src={isDefeatedBoss ? IMAGES.specialCardBack : IMAGES.cardBack}
                         alt=""
                         width={200}
                         height={280}

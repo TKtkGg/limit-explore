@@ -4,7 +4,7 @@ export type BattleResultDisplay = {
     gold: number | null;
     levelFrom: number | null;
     levelTo: number | null;
-    backPath: "/explore" | "/gameover" | "/progress";
+    backPath: "/explore" | "/gameover" | "/card";
 };
 
 export function parseBattleResult(
@@ -44,7 +44,7 @@ export function parseBattleResult(
             gold: Number(victoryMatch[2]),
             levelFrom: levelUpCount > 0 ? playerLevel - levelUpCount : null,
             levelTo: levelUpCount > 0 ? playerLevel : null,
-            backPath: enemyType === "BOSS" ? "/progress" : "/explore",
+            backPath: enemyType === "BOSS" ? "/card" : "/explore",
         };
     }
 

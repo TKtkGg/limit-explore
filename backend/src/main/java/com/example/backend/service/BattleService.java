@@ -65,6 +65,7 @@ public class BattleService {
 
     public BattleResponse battleStart(String sessionId) {
         GameSession gameSession = this.gameSessionManager.getRequiredGameSession(sessionId);
+        //gameSession.getMoveState().setDefeatedBoss(false);
 
         gameSession.getBattleState().reset();
         setEnemyState(gameSession);
@@ -192,9 +193,15 @@ public class BattleService {
 
     public String result(String winnerName, GameSession gameSession) {
         gameSession.getBattleState().setFinished(true);
-        if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) gameSession.getMoveState().setCleared(true);
 
         if(winnerName != null && winnerName.equals(gameSession.getPlayerState().getName())) {
+            if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) {
+                gameSession.getMoveState().setDefeatedBoss(true);
+                if (gameSession.getMoveState().getCurrentLaps() == gameSession.getMoveState().getTotalLaps()) {
+                    gameSession.getMoveState().setCleared(true);
+                }
+            }
+
             int[] reward = applyCards(gameSession.getEnemyState().getGold(), gameSession.getEnemyState().getExp(), gameSession);
 
             String message = gameSession.getPlayerState().calcExp(reward[1]);
@@ -215,6 +222,9 @@ public class BattleService {
             }
             if(card.getName().equals("ゴブリンキラー") && gameSession.getEnemyState().getName().contains("ゴブリン")) {
                 damage = (int) (damage * 1.5);
+            }
+            if(card.getName().equals("デバッグ用最強カード")) {
+                damage = 1000000;
             }
         }
 

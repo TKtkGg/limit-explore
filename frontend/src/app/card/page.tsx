@@ -18,6 +18,8 @@ export default function CardPage() {
     const router = useRouter();
     const [cards, setCards] = useState<CardState[] | null>(null);
     const [chosenCard, setChosenCard] = useState<CardState | null>(null);
+    const [isDefeatedBoss, setIsDefeatedBoss] = useState(false);
+    const [backPath, setBackPath] = useState<string | null>(null);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isChoosing, setIsChoosing] = useState(false);
@@ -37,6 +39,9 @@ export default function CardPage() {
                 const response = await apiGet("/card");
                 setCards(response.display ?? []);
                 setChosenCard(null);
+                setIsDefeatedBoss(response.defeatedBoss ?? false);
+                console.log(response.defeatedBoss);
+                setBackPath((response.defeatedBoss ?? false) ? "/progress" : "/explore");
                 setError(null);
             } catch (err: unknown) {
                 if (err instanceof Error) {
@@ -110,7 +115,9 @@ export default function CardPage() {
                                 index={index} 
                                 isDisabled={isDisabled}
                                 isThisChosen={isThisChosen}
-                                handleChooseCard={handleChooseCard} />
+                                handleChooseCard={handleChooseCard}
+                                isDefeatedBoss={isDefeatedBoss}
+                            />
                         );
                     })}
                 </div>
@@ -123,7 +130,7 @@ export default function CardPage() {
 
                 {showBackFooter ? (
                     <footer className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 sm:bottom-8 sm:left-6 sm:translate-x-0">
-                        <MainButton onClick={() => router.push("/explore")} kind="back">戻る</MainButton>
+                        <MainButton onClick={() => router.push(backPath ?? "/explore")} kind="back">戻る</MainButton>
                     </footer>
                 ) : null}
             </div>

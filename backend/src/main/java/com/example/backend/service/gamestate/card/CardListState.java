@@ -14,6 +14,7 @@ public class CardListState {
             new CardState("ラッキー", "ステータス宝箱から得る報酬を2倍にする", 800),
             new CardState("ラッキー2", "勝利時の報酬を1.5倍にする", 800),
             new CardState("アディショナルスコア", "得るスコアが1.5倍になる", 1000),
+            new CardState("デバッグ用最強カード", "敵を一撃で倒す", 1000000),
         };
     }   
 

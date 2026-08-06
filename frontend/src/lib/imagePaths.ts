@@ -20,6 +20,7 @@ export const IMAGES = {
     treasureOpen: "/img/treasure-open.png",
     cardFront: "/img/card-front.png",
     cardBack: "/img/card-back.png",
+    specialCardBack: "/img/special-card-back.png",
 } as const;
 
 export const ENEMY_IMAGES = {
