@@ -71,6 +71,7 @@ public class BattleService {
         setEnemyState(gameSession);
         gameSession.getEnemyState().adjustLevel(gameSession.getPlayerState());
         gameSession.getEnemyState().respawn();
+        gameSession.getPlayerState().setIsRun(false);
         return new BattleResponse("バトル開始！", gameSession.getPlayerState(), gameSession.getEnemyState(), gameSession.getBattleState());
     }
 
@@ -174,6 +175,9 @@ public class BattleService {
     }
 
     public String run(GameSession gameSession){
+        if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) {
+            return "失敗した！";
+        }
         gameSession.getPlayerState().setIsRun(true);
         return result("escape", gameSession);
     }
