@@ -31,7 +31,6 @@ public class MoveService {
             throw new GameStoppedException("ゲームが停止しました。");
         } 
         if(moveState.getRemainingSteps() <= 0) {
-            moveState.setCurrentLaps(moveState.getCurrentLaps() + 1);
             moveState.setRemainingSteps(25);
             if (moveState.getCurrentLaps() > moveState.getTotalLaps()) {
                 moveState.setStopped(true);

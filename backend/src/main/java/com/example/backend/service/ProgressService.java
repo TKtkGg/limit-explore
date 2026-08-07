@@ -20,4 +20,9 @@ public class ProgressService {
         int score = scoreService.calculateScore(gameSession);
         return new ProgressResponse(score, gameSession.getMoveState().getCleared(), gameSession.getPlayerState());
     }
+
+    public void continueProgress(String sessionId) {
+        GameSession gameSession = gameSessionManager.getRequiredGameSession(sessionId);
+        gameSession.getMoveState().setCurrentLaps(gameSession.getMoveState().getCurrentLaps() + 1);
+    }
 }

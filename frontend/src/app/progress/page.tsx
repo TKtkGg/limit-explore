@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiGet } from "@/lib/apiClient";
+import { apiGet, apiPost } from "@/lib/apiClient";
 import { useRouter } from "next/navigation";
 import { StatusState } from "@/type/types";
 
@@ -30,6 +30,21 @@ export default function ProgressPage() {
         }
         start();
     }, []);
+
+    const handleContinue = async () => {
+        try {
+            await apiPost("/progress/continue");
+            router.push("/explore");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("通信に失敗しました。");
+            }
+        }
+    }
+
+
     return (
         <div>
             <h1>Progress</h1>
@@ -49,7 +64,7 @@ export default function ProgressPage() {
             <p>Owned Items: {Object.entries(playerState?.ownedItems || {}).map(([item, count]) => `${item}: ${count}`).join(", ")}</p>
             {error && <p>{error}</p>}
             <button onClick={() => {
-                router.push("/explore");
+                handleContinue();
             }}>Explore</button>
         </div>
     );
