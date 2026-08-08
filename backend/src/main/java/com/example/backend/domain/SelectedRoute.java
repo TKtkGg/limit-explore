@@ -6,4 +6,5 @@ public enum SelectedRoute {
     SHOP,
     TREASURE,
     REST,
+    BOSS,
 }

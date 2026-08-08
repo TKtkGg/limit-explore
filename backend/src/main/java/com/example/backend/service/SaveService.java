@@ -10,6 +10,7 @@ import com.example.backend.service.gamestate.BattleState;
 import com.example.backend.service.gamestate.treasure.TreasureState;
 import com.example.backend.service.gamestate.shop.ShopState;
 import com.example.backend.service.gamestate.character.EnemyState;
+import com.example.backend.domain.EnemyType;
 
 import tools.jackson.databind.ObjectMapper;
 
@@ -77,7 +78,7 @@ public class SaveService {
             new BattleState(), 
             new TreasureState(), 
             new ShopState(), 
-            new EnemyState("スライム", 1, 100, 100, 10, 10, 10, 0, 100, "/img/enemy/slime.png", 1, 10));
+            new EnemyState("スライム", 1, 100, 100, 10, 10, 10, 0, 100, "/img/enemy/slime.png", 1, 10, EnemyType.NORMAL));
         
         gameSession.setSessionId(newSessionId);
 

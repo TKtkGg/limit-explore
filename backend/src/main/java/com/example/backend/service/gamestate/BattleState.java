@@ -6,6 +6,7 @@ public class BattleState {
     int currentTurns;
     int damageToPlayer;
     int damageToEnemy;
+    int healAmount;
     boolean finished;
     BattleChoice playerChoice;
     BattleChoice enemyChoice;
@@ -13,6 +14,7 @@ public class BattleState {
         this.currentTurns = 0;
         this.damageToPlayer = 0;
         this.damageToEnemy = 0;
+        this.healAmount = 0;
         this.finished = false;
         this.playerChoice = null;
         this.enemyChoice = null;
@@ -25,6 +27,9 @@ public class BattleState {
     }
     public int getDamageToEnemy() {
         return damageToEnemy;
+    }
+    public int getHealAmount() {
+        return healAmount;
     }
     public boolean getFinished() {
         return finished;
@@ -45,6 +50,9 @@ public class BattleState {
     public void setDamageToEnemy(int damageToEnemy) {
         this.damageToEnemy = damageToEnemy;
     }
+    public void setHealAmount(int healAmount) {
+        this.healAmount = healAmount;
+    }
     public void setPlayerChoice(BattleChoice playerChoice) {
         this.playerChoice = playerChoice;
     }
@@ -59,6 +67,7 @@ public class BattleState {
         this.currentTurns = 0;
         this.damageToPlayer = 0;
         this.damageToEnemy = 0;
+        this.healAmount = 0;
         this.finished = false;
         this.playerChoice = null;
         this.enemyChoice = null;

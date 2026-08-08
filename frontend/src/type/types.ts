@@ -38,6 +38,7 @@ export type EnemyState = {
     exp: number;
     gold: number;
     imagePath: string;
+    enemyType: "NORMAL" | "BOSS";
 }
 
 export type StatusState = {
@@ -73,6 +74,7 @@ export type BattleState = {
         currentTurns: number;
         damageToPlayer: number;
         damageToEnemy: number;
+        healAmount: number;
         finished: boolean;
         playerChoice: BattleChoice;
         enemyChoice: BattleChoice;

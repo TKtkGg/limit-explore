@@ -26,7 +26,10 @@ const ROUTE_SLOTS = [
 
 export default function ExplorePage() {
     const [remainingSteps, setRemainingSteps] = useState(25);
+    const [currentLaps, setCurrentLaps] = useState(1);
+    const [totalLaps, setTotalLaps] = useState(3);
     const [stopped, setStopped] = useState(false);
+    const [backgroundImage, setBackgroundImage] = useState<string>(BACKGROUNDS.grasslandExplore);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [routeOptions, setRouteOptions] = useState<string[]>([]);
@@ -46,7 +49,19 @@ export default function ExplorePage() {
             try {
                 const response = await apiGet("/move/status");
                 setRemainingSteps(response.remainingSteps);
+                setCurrentLaps(response.currentLaps);
+                setTotalLaps(response.totalLaps);
                 setStopped(response.stopped);
+                if(response.currentLaps === 1) {
+                    setBackgroundImage(BACKGROUNDS.grasslandExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.grasslandExplore);
+                } else if(response.currentLaps === 2) {
+                    setBackgroundImage(BACKGROUNDS.beachExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.beachExplore);
+                } else if(response.currentLaps === 3) {
+                    setBackgroundImage(BACKGROUNDS.volcanoExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.volcanoExplore);
+                }
                 setRouteOptions(response.routeOptions);
                 setMessage(response.message);
                 setError(null);
@@ -85,10 +100,15 @@ export default function ExplorePage() {
             } else if (routeType === "BATTLE") {
                 response = await apiPost("/move", { routeType: routeType });
                 router.push("/battle");
+            } else if (routeType === "BOSS") {
+                response = await apiPost("/move", { routeType: routeType });
+                router.push("/battle");
             } else {
                 response = await apiPost("/move", { routeType: routeType });
             }
             setRemainingSteps(response.remainingSteps);
+            setCurrentLaps(response.currentLaps);
+            setTotalLaps(response.totalLaps);
             setStopped(response.stopped);
             setRouteOptions(response.routeOptions);
             setMessage(response.message);
@@ -121,7 +141,7 @@ export default function ExplorePage() {
             {/* 背景 */}
             <div
                 className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${BACKGROUNDS.explore}')` }}
+                style={{ backgroundImage: `url('${backgroundImage}')` }}
                 aria-hidden
             />
 
@@ -134,7 +154,7 @@ export default function ExplorePage() {
                         img={ICONS.setting}
                     />
                     <div className="rounded-md border-2 border-black bg-white/90 px-3 py-1.5 text-xs font-bold tabular-nums text-neutral-900 shadow-[2px_2px_0_#000] sm:text-sm">
-                        残り {remainingSteps}
+                        ラップ: {currentLaps} / {totalLaps} 残り {remainingSteps} マス
                     </div>
                 </div>
 

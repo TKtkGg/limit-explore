@@ -17,6 +17,8 @@ import com.example.backend.domain.BattleChoice;
 import com.example.backend.service.gamestate.item.ItemState;
 import com.example.backend.service.gamestate.item.ItemListState;
 import com.example.backend.service.gamestate.session.GameSession;
+import com.example.backend.domain.EnemyType;
+import com.example.backend.domain.SelectedRoute;
 
 @Service
 public class BattleService {
@@ -36,8 +38,14 @@ public class BattleService {
         List<EnemyState> selectEnemies = new ArrayList<>();
         for (EnemyState enemy : this.enemyList) {
             for(int i = 0; i < enemy.getSpawnRate(); i++) {
-                if(enemy.getAppearedLevel() <= gameSession.getPlayerState().getLevel()) {
+                if (enemy.getEnemyType().equals(EnemyType.BOSS) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BOSS)) {
                     selectEnemies.add(enemy);
+                }
+
+                if (enemy.getEnemyType().equals(EnemyType.NORMAL) && gameSession.getMoveState().getRouteType().equals(SelectedRoute.BATTLE)) {
+                    if(enemy.getAppearedLevel() <= gameSession.getPlayerState().getLevel()) {
+                        selectEnemies.add(enemy);
+                    }
                 }
             }
         }
@@ -52,15 +60,18 @@ public class BattleService {
         gameSession.getEnemyState().setExp(template.getExp());
         gameSession.getEnemyState().setGold(template.getGold());
         gameSession.getEnemyState().setImagePath(template.getImagePath());
+        gameSession.getEnemyState().setEnemyType(template.getEnemyType());
     }
 
     public BattleResponse battleStart(String sessionId) {
         GameSession gameSession = this.gameSessionManager.getRequiredGameSession(sessionId);
+        //gameSession.getMoveState().setDefeatedBoss(false);
 
         gameSession.getBattleState().reset();
         setEnemyState(gameSession);
         gameSession.getEnemyState().adjustLevel(gameSession.getPlayerState());
         gameSession.getEnemyState().respawn();
+        gameSession.getPlayerState().setIsRun(false);
         return new BattleResponse("バトル開始！", gameSession.getPlayerState(), gameSession.getEnemyState(), gameSession.getBattleState());
     }
 
@@ -72,6 +83,7 @@ public class BattleService {
         gameSession.getBattleState().setEnemyChoice(getRandomEnemyChoice());
         gameSession.getBattleState().setDamageToPlayer(0);
         gameSession.getBattleState().setDamageToEnemy(0);
+        gameSession.getBattleState().setHealAmount(0);
         if(isPlayerFast(gameSession)) {
             message = playerAction(request, gameSession);
             if(gameSession.getEnemyState().isAlive() && !gameSession.getPlayerState().getIsRun()) {
@@ -164,6 +176,9 @@ public class BattleService {
     }
 
     public String run(GameSession gameSession){
+        if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) {
+            return "失敗した！";
+        }
         gameSession.getPlayerState().setIsRun(true);
         return result("escape", gameSession);
     }
@@ -175,7 +190,8 @@ public class BattleService {
         }
 
         if (item.getEffectType().equals("HEAL")) {
-            gameSession.getPlayerState().Heal(item.getAmount());
+            int healAmount = gameSession.getPlayerState().Heal(item.getAmount());
+            gameSession.getBattleState().setHealAmount(healAmount);
             gameSession.getPlayerState().removeItem(item, 1);
         }
         return gameSession.getPlayerState().getName() + "は" + itemName + "を使用した！";
@@ -183,7 +199,15 @@ public class BattleService {
 
     public String result(String winnerName, GameSession gameSession) {
         gameSession.getBattleState().setFinished(true);
+
         if(winnerName != null && winnerName.equals(gameSession.getPlayerState().getName())) {
+            if (gameSession.getEnemyState().getEnemyType().equals(EnemyType.BOSS)) {
+                gameSession.getMoveState().setDefeatedBoss(true);
+                if (gameSession.getMoveState().getCurrentLaps() == gameSession.getMoveState().getTotalLaps()) {
+                    gameSession.getMoveState().setCleared(true);
+                }
+            }
+
             int[] reward = applyCards(gameSession.getEnemyState().getGold(), gameSession.getEnemyState().getExp(), gameSession);
 
             String message = gameSession.getPlayerState().calcExp(reward[1]);
@@ -204,6 +228,17 @@ public class BattleService {
             }
             if(card.getName().equals("ゴブリンキラー") && gameSession.getEnemyState().getName().contains("ゴブリン")) {
                 damage = (int) (damage * 1.5);
+            }
+            if(card.getName().equals("デバッグ用最強カード")) {
+                damage = 1000000;
+            }
+            if(card.getName().equals("クリティカル！")) {
+                if(Math.random() < 0.3) {
+                    damage = (int) (damage * 2);
+                }
+            }
+            if(card.getName().equals("ドラキュラ")) {
+                gameSession.getPlayerState().Heal((int)(damage * 0.1));
             }
         }
 

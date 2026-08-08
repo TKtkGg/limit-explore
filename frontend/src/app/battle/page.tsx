@@ -10,7 +10,6 @@ import { BattleCommandBox } from "@/components/molecules/BattleCommandBox";
 import { BattleMessageBox } from "@/components/molecules/BattleMessageBox";
 import { BattleResultModal } from "@/components/molecules/BattleResultModal";
 import { parseBattleResult } from "@/lib/parseBattleResult";
-import { getItemHealAmount } from "@/lib/itemHealAmount";
 import { messageDivision } from "@/lib/messageDivision";
 import { isPlayerFast } from "@/lib/isPlayerFast";
 import { sleep } from "@/lib/sleepHelper";
@@ -44,6 +43,11 @@ export default function BattlePage() {
     const [damageFloater, setDamageFloater] = useState<DamageFloater | null>(null);
     const [battleEffect, setBattleEffect] = useState<BattleEffect | null>(null);
     const [enemyDefeated, setEnemyDefeated] = useState(false);
+    const [backgroundImage] = useState(() =>
+        typeof window !== "undefined"
+        ? localStorage.getItem("exploreBackground") ?? BACKGROUNDS.grasslandExplore
+            : BACKGROUNDS.grasslandExplore
+    );
     const { playBgm, playSfx } = useAudio();
     const router = useRouter();
     const effectKeyRef = useRef(0);
@@ -197,7 +201,7 @@ export default function BattlePage() {
 
                 let currentHp = displayPlayerHp;
                 currentHp = Math.min(
-                    currentHp + (getItemHealAmount(itemName) ?? 0),
+                    currentHp + (response.battleState.healAmount ?? 0),
                     response.playerState.maxHp
                 );
 
@@ -254,7 +258,8 @@ export default function BattlePage() {
             ? parseBattleResult(
                 battleState.message,
                 battleState.playerState.level,
-                battleState.playerState.hp
+                battleState.playerState.hp,
+                battleState.enemyState.enemyType
             )
             : null;
 
@@ -262,7 +267,7 @@ export default function BattlePage() {
         <div className="relative min-h-[100dvh] w-full overflow-hidden bg-neutral-900">
             <div
                 className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${BACKGROUNDS.explore}')` }}
+                style={{ backgroundImage: `url('${backgroundImage}')` }}
                 aria-hidden
             />
 

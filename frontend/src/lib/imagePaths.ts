@@ -1,5 +1,7 @@
 export const BACKGROUNDS = {
-    explore: "/background/explore.jpg",
+    grasslandExplore: "/background/grassland-explore.jpg",
+    beachExplore: "/background/beach-explore.jpg",
+    volcanoExplore: "/background/volcano-explore.jpg",
     woodPlank: "/background/wood-plank.jpg",
     status: "/background/status.jpg",
     statusPhone: "/background/status_phone.png",
@@ -20,6 +22,7 @@ export const IMAGES = {
     treasureOpen: "/img/treasure-open.png",
     cardFront: "/img/card-front.png",
     cardBack: "/img/card-back.png",
+    specialCardBack: "/img/special-card-back.png",
 } as const;
 
 export const ENEMY_IMAGES = {

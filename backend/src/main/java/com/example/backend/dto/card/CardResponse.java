@@ -7,10 +7,12 @@ import com.example.backend.service.gamestate.card.CardState;
 public class CardResponse {
     private List<CardState> display;
     private CardState chosenCard;
+    private boolean isDefeatedBoss;
 
-    public CardResponse(List<CardState> display, CardState chosenCard) {
+    public CardResponse(List<CardState> display, CardState chosenCard, boolean isDefeatedBoss) {
         this.display = display;
         this.chosenCard = chosenCard;
+        this.isDefeatedBoss = isDefeatedBoss;
     }
 
     public List<CardState> getDisplay() {
@@ -19,5 +21,9 @@ public class CardResponse {
 
     public CardState getChosenCard() {
         return this.chosenCard;
+    }
+
+    public boolean isDefeatedBoss() {
+        return this.isDefeatedBoss;
     }
 }
