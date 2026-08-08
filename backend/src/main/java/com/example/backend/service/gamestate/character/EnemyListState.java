@@ -21,7 +21,7 @@ public class EnemyListState {
         this.enemyList.add(new EnemyState("ヒポグリフ", 1, 100, 100, 12, 9, 12, 100, 130, "/img/enemy/hippogriff.png", 4, 3, EnemyType.NORMAL));
         this.enemyList.add(new EnemyState("ミノタウロス", 1, 130, 130, 14, 8, 9, 105, 120, "/img/enemy/minotaur.png", 4, 3, EnemyType.NORMAL));
         this.enemyList.add(new EnemyState("ケルベロス", 1, 150, 150, 13, 10, 10, 130, 150, "/img/enemy/kerberos.png", 4, 3, EnemyType.NORMAL));
-        this.enemyList.add(new EnemyState("ドラゴン", 1, 250, 250, 20, 15, 15, 500, 500, "/img/enemy/dragon.png", 5, 2, EnemyType.BOSS));
+        this.enemyList.add(new EnemyState("ドラゴン", 1, 200, 200, 15, 13, 13, 500, 500, "/img/enemy/dragon.png", 5, 2, EnemyType.BOSS));
     }
 
     public List<EnemyState> getEnemyList() {

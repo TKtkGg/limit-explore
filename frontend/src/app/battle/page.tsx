@@ -15,6 +15,7 @@ import { isPlayerFast } from "@/lib/isPlayerFast";
 import { sleep } from "@/lib/sleepHelper";
 import { useAudio } from "@/components/providers/AudioProvider";
 import { BGM, SFX } from "@/lib/audioPaths";
+import { BACKGROUNDS } from "@/lib/imagePaths";
 import { FlashType, SpriteEffectType } from "@/lib/effectPaths";
 import { BattleEffect } from "@/type/types";
 import { useRequireSession } from "@/hooks/useRequireSession";
@@ -42,6 +43,11 @@ export default function BattlePage() {
     const [damageFloater, setDamageFloater] = useState<DamageFloater | null>(null);
     const [battleEffect, setBattleEffect] = useState<BattleEffect | null>(null);
     const [enemyDefeated, setEnemyDefeated] = useState(false);
+    const [backgroundImage] = useState(() =>
+        typeof window !== "undefined"
+        ? localStorage.getItem("exploreBackground") ?? BACKGROUNDS.grasslandExplore
+            : BACKGROUNDS.grasslandExplore
+    );
     const { playBgm, playSfx } = useAudio();
     const router = useRouter();
     const effectKeyRef = useRef(0);
@@ -261,7 +267,7 @@ export default function BattlePage() {
         <div className="relative min-h-[100dvh] w-full overflow-hidden bg-neutral-900">
             <div
                 className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${localStorage.getItem("exploreBackground")}')` }}
+                style={{ backgroundImage: `url('${backgroundImage}')` }}
                 aria-hidden
             />
 
