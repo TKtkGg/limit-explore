@@ -40,7 +40,6 @@ export default function CardPage() {
                 setCards(response.display ?? []);
                 setChosenCard(null);
                 setIsDefeatedBoss(response.defeatedBoss ?? false);
-                console.log(response.defeatedBoss);
                 setBackPath((response.defeatedBoss ?? false) ? "/progress" : "/explore");
                 setError(null);
             } catch (err: unknown) {

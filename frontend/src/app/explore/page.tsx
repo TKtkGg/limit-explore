@@ -44,30 +44,6 @@ export default function ExplorePage() {
         playBgm(BGM.explore);
     }, [playBgm]);
 
-    // デバッグ: Wキーで /move のみ呼んでマスを進める（画面遷移なし）
-    useEffect(() => {
-        const onKeyDown = async (e: KeyboardEvent) => {
-            if (e.key !== "w" && e.key !== "W") return;
-            if (isLoading || stopped) return;
-            setIsLoading(true);
-            try {
-                const response = await apiPost("/move", { routeType: "REST" });
-                setRemainingSteps(response.remainingSteps);
-                setCurrentLaps(response.currentLaps);
-                setTotalLaps(response.totalLaps);
-                setStopped(response.stopped);
-                setRouteOptions(response.routeOptions);
-                setMessage(response.message);
-            } catch (err: unknown) {
-                setError(err instanceof Error ? err : new Error("通信に失敗しました。"));
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-    }, [isLoading, stopped]);
-
     useEffect(() => {
         const start = async () => {
             try {
