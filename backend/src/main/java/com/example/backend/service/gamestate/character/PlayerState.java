@@ -97,6 +97,7 @@ public class PlayerState extends CharacterState {
 
     public int Heal(int amount) {
         int healAmount = Math.min(amount, this.maxHp - this.hp);
+        healAmount = applyCards(healAmount, this.getOwnedCards());
         this.hp += healAmount;
         return healAmount;
     }
@@ -107,6 +108,7 @@ public class PlayerState extends CharacterState {
 
     public void addCard(CardState card) {
         this.ownedCards.add(card);
+        applyCard(card);
     }
 
     public void addItem(ItemState item, int count) {
@@ -158,5 +160,27 @@ public class PlayerState extends CharacterState {
         this.nextLevelExp = 100;
         this.ownedItems.clear();
         this.ownedItems.put("回復薬(小)", 3);
+    }
+
+    private void applyCard(CardState card) {
+        if(card.getName().equals("スーパーパワー")) {
+            this.setMaxHp((int)(this.getMaxHp() * 1.5));
+            this.setHp(this.getMaxHp());
+            this.setAtk((int)(this.getAtk() * 1.5));
+            this.setDef((int)(this.getDef() * 1.5));
+            this.setSpd((int)(this.getSpd() * 1.5));
+        }
+        if(card.getName().equals("リッチ")) {
+            this.setGold(this.getGold() + 3000);
+        }
+    }
+
+    private int applyCards(int value, List<CardState> cards) {
+        for(CardState card : cards) {
+            if(card.getName().equals("スーパーヒール")) {
+                value = (int)(value * 1.5);
+            }
+        }
+        return value;
     }
 }

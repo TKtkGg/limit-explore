@@ -11,6 +11,8 @@ public class SpecialCardListState {
             new CardState("スーパーパワー", "ステータスを永久に1.5倍にする", 1000),
             new CardState("リッチ", "即座に3000Gを入手する", 3000),
             new CardState("クリティカル！", "確率で敵に与えるダメージが2倍になる", 1000),
+            new CardState("スーパーヒール", "回復するHPを1.5倍にする", 1500),
+            new CardState("ドラキュラ", "与えたダメージの10%を回復する", 1000),
         };
     }   
 

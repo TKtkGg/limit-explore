@@ -230,6 +230,14 @@ public class BattleService {
             if(card.getName().equals("デバッグ用最強カード")) {
                 damage = 1000000;
             }
+            if(card.getName().equals("クリティカル！")) {
+                if(Math.random() < 0.3) {
+                    damage = (int) (damage * 2);
+                }
+            }
+            if(card.getName().equals("ドラキュラ")) {
+                gameSession.getPlayerState().Heal((int)(damage * 0.1));
+            }
         }
 
         return damage;
