@@ -29,6 +29,7 @@ export default function ExplorePage() {
     const [currentLaps, setCurrentLaps] = useState(1);
     const [totalLaps, setTotalLaps] = useState(3);
     const [stopped, setStopped] = useState(false);
+    const [backgroundImage, setBackgroundImage] = useState<string>(BACKGROUNDS.grasslandExplore);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [routeOptions, setRouteOptions] = useState<string[]>([]);
@@ -43,6 +44,30 @@ export default function ExplorePage() {
         playBgm(BGM.explore);
     }, [playBgm]);
 
+    // デバッグ: Wキーで /move のみ呼んでマスを進める（画面遷移なし）
+    useEffect(() => {
+        const onKeyDown = async (e: KeyboardEvent) => {
+            if (e.key !== "w" && e.key !== "W") return;
+            if (isLoading || stopped) return;
+            setIsLoading(true);
+            try {
+                const response = await apiPost("/move", { routeType: "REST" });
+                setRemainingSteps(response.remainingSteps);
+                setCurrentLaps(response.currentLaps);
+                setTotalLaps(response.totalLaps);
+                setStopped(response.stopped);
+                setRouteOptions(response.routeOptions);
+                setMessage(response.message);
+            } catch (err: unknown) {
+                setError(err instanceof Error ? err : new Error("通信に失敗しました。"));
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isLoading, stopped]);
+
     useEffect(() => {
         const start = async () => {
             try {
@@ -51,6 +76,16 @@ export default function ExplorePage() {
                 setCurrentLaps(response.currentLaps);
                 setTotalLaps(response.totalLaps);
                 setStopped(response.stopped);
+                if(response.currentLaps === 1) {
+                    setBackgroundImage(BACKGROUNDS.grasslandExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.grasslandExplore);
+                } else if(response.currentLaps === 2) {
+                    setBackgroundImage(BACKGROUNDS.beachExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.beachExplore);
+                } else if(response.currentLaps === 3) {
+                    setBackgroundImage(BACKGROUNDS.volcanoExplore);
+                    localStorage.setItem("exploreBackground", BACKGROUNDS.volcanoExplore);
+                }
                 setRouteOptions(response.routeOptions);
                 setMessage(response.message);
                 setError(null);
@@ -130,7 +165,7 @@ export default function ExplorePage() {
             {/* 背景 */}
             <div
                 className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${BACKGROUNDS.explore}')` }}
+                style={{ backgroundImage: `url('${backgroundImage}')` }}
                 aria-hidden
             />
 

@@ -10,13 +10,11 @@ import { BattleCommandBox } from "@/components/molecules/BattleCommandBox";
 import { BattleMessageBox } from "@/components/molecules/BattleMessageBox";
 import { BattleResultModal } from "@/components/molecules/BattleResultModal";
 import { parseBattleResult } from "@/lib/parseBattleResult";
-import { getItemHealAmount } from "@/lib/itemHealAmount";
 import { messageDivision } from "@/lib/messageDivision";
 import { isPlayerFast } from "@/lib/isPlayerFast";
 import { sleep } from "@/lib/sleepHelper";
 import { useAudio } from "@/components/providers/AudioProvider";
 import { BGM, SFX } from "@/lib/audioPaths";
-import { BACKGROUNDS } from "@/lib/imagePaths";
 import { FlashType, SpriteEffectType } from "@/lib/effectPaths";
 import { BattleEffect } from "@/type/types";
 import { useRequireSession } from "@/hooks/useRequireSession";
@@ -197,7 +195,7 @@ export default function BattlePage() {
 
                 let currentHp = displayPlayerHp;
                 currentHp = Math.min(
-                    currentHp + (getItemHealAmount(itemName) ?? 0),
+                    currentHp + (response.battleState.healAmount ?? 0),
                     response.playerState.maxHp
                 );
 
@@ -263,7 +261,7 @@ export default function BattlePage() {
         <div className="relative min-h-[100dvh] w-full overflow-hidden bg-neutral-900">
             <div
                 className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url('${BACKGROUNDS.explore}')` }}
+                style={{ backgroundImage: `url('${localStorage.getItem("exploreBackground")}')` }}
                 aria-hidden
             />
 

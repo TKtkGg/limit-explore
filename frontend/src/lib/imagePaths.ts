@@ -1,5 +1,7 @@
 export const BACKGROUNDS = {
-    explore: "/background/explore.jpg",
+    grasslandExplore: "/background/grassland-explore.jpg",
+    beachExplore: "/background/beach-explore.jpg",
+    volcanoExplore: "/background/volcano-explore.jpg",
     woodPlank: "/background/wood-plank.jpg",
     status: "/background/status.jpg",
     statusPhone: "/background/status_phone.png",

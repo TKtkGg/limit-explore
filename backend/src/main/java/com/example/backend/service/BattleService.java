@@ -83,6 +83,7 @@ public class BattleService {
         gameSession.getBattleState().setEnemyChoice(getRandomEnemyChoice());
         gameSession.getBattleState().setDamageToPlayer(0);
         gameSession.getBattleState().setDamageToEnemy(0);
+        gameSession.getBattleState().setHealAmount(0);
         if(isPlayerFast(gameSession)) {
             message = playerAction(request, gameSession);
             if(gameSession.getEnemyState().isAlive() && !gameSession.getPlayerState().getIsRun()) {
@@ -189,7 +190,8 @@ public class BattleService {
         }
 
         if (item.getEffectType().equals("HEAL")) {
-            gameSession.getPlayerState().Heal(item.getAmount());
+            int healAmount = gameSession.getPlayerState().Heal(item.getAmount());
+            gameSession.getBattleState().setHealAmount(healAmount);
             gameSession.getPlayerState().removeItem(item, 1);
         }
         return gameSession.getPlayerState().getName() + "は" + itemName + "を使用した！";
